@@ -1,0 +1,51 @@
+SETUP AND MAKE A BOX WITH MOUSE CONTROL AND HELPER
+---------------------------------------
+import * as THREE from 'three';
+import { Camera } from 'three';
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
+
+// TO START SERVER
+//   parcel ./src/index.html
+
+const renderer = new THREE.WebGLRenderer();
+
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+
+// set caer up
+const camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+    );
+
+// orbit control instance
+const orbit = new OrbitControls(camera, renderer.domElement);
+orbit.update();
+// x/y/z helper guids
+const axesHelper = new THREE.AxesHelper(3);
+scene.add(axesHelper);
+
+//X,Y,Z feild of view
+camera.position.set(0,2,5);
+
+// ADD abox to the scene
+const boxGeometry = new THREE.BoxGeometry();
+const boxMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00});
+const box = new THREE.Mesh(boxGeometry, boxMaterial);
+scene.add(box);
+
+// animate box
+function animate(time){
+ box.rotation.x = time / 1000;
+ box.rotation.y = time / 1000;
+ //box.rotation.y += 0.01;  manual
+    renderer.render(scene, camera);
+ 
+}
+
+renderer.setAnimationLoop(animate);
